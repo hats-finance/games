@@ -11,5 +11,9 @@ module.exports = {
     compile: {
       tasks: ["compile"],
     },
+    test: {
+      tasks: ["test"],
+      files: ["contracts", "test"],
+    },
   },
 };
