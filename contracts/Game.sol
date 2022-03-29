@@ -189,6 +189,9 @@ contract Game is ERC721 {
       speed = 0;
     } else {
       speed = randomGen(MAX_POINTS - fire - water - air);
+      if (speed > 9) {
+        speed = 9;
+      }
     }
     newMon = Mon(fire, water, air, speed);
   }
