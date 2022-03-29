@@ -51,7 +51,7 @@ describe("Game contract", function () {
     const receipt = await tx.wait();
     // get a tokenID
     const monId1 = receipt.events[0].args.tokenId;
-    await game.connect(player1).swapForNewCard(monId1, 0);
+    await game.connect(player1).swapForNewCard(monId1);
     await expect(game.ownerOf(monId1)).to.revertedWith("nonexistent token");
   });
 });

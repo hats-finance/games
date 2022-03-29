@@ -136,20 +136,12 @@ contract Game is ERC721 {
 
   function swap(address _to, uint256 _mon1, uint256 _mon2) external {
     address swapper = msg.sender;
-    uint256 idx1;
-    uint256 idx2;
-    for (uint256 i; i < DECK_SIZE; i++) {
-      if (decks[swapper][i] == _mon1) {
-        idx1 = i;
-      }
-      if (decks[_to][i] == _mon2) {
-        idx2 = i;
-      }
-    }
-    // require(decks[swapper][_idx1] == _mon1, "Wrong index specified");
-    // require(decks[_to][_idx2] == _mon2, "Wrong index specified");
     require(forSale[_mon2], "Cannot swap a Mon that is not for sale");
     require(swapper != _to, "Cannot swap a card with yourself");
+
+    uint256 idx1 = indexInDeck(swapper, _mon1);
+    uint256 idx2 = indexInDeck(_to, _mon2);
+
     _safeTransfer(swapper, _to, _mon1, "");
     _safeTransfer(_to, swapper, _mon2, "");
 
@@ -158,12 +150,20 @@ contract Game is ERC721 {
     decks[_to][idx2] = _mon1;
   }
 
+  function indexInDeck(address _owner, uint256 _monId) public view returns(uint256 idx) {
+    for (uint256 i; i < DECK_SIZE; i++) {
+      if (decks[_owner][i] == _monId) {
+        idx = i;
+      }
+    }
+  }
 
-  function swapForNewCard(uint256 _mon, uint256 _idx) external {
+
+  function swapForNewCard(uint256 _mon) external {
     address swapper = msg.sender;
-    require(decks[swapper][_idx] == _mon, "Wrong index specified");
+    uint256 idx = indexInDeck(swapper, _mon);
     _burn(_mon);
-    decks[swapper][_idx] = _mintMon(swapper);
+    decks[swapper][idx] = _mintMon(swapper);
   }
 
   function _mintMon(address _to, Mon memory mon) internal returns(uint256) {
