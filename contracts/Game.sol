@@ -56,7 +56,7 @@ contract Game is ERC721 {
   }
 
   function fight() external {
-    // fight the two decks (something like this, logic to be added)
+    // fight the two decks 
     address attacker = msg.sender;
     address opponent = flag;
     uint256[3] memory deck0 = decks[msg.sender];
@@ -134,18 +134,28 @@ contract Game is ERC721 {
     forSale[_monId] = true;
   }
 
-  function swap(address _to, uint256 _mon1, uint256 _mon2, uint256 _idx1, uint256 _idx2) external {
+  function swap(address _to, uint256 _mon1, uint256 _mon2) external {
     address swapper = msg.sender;
-    require(decks[swapper][_idx1] == _mon1, "Wrong index specified");
-    require(decks[_to][_idx2] == _mon2, "Wrong index specified");
+    uint256 idx1;
+    uint256 idx2;
+    for (uint256 i; i < DECK_SIZE; i++) {
+      if (decks[swapper][i] == _mon1) {
+        idx1 = i;
+      }
+      if (decks[_to][i] == _mon2) {
+        idx2 = i;
+      }
+    }
+    // require(decks[swapper][_idx1] == _mon1, "Wrong index specified");
+    // require(decks[_to][_idx2] == _mon2, "Wrong index specified");
     require(forSale[_mon2], "Cannot swap a Mon that is not for sale");
     require(swapper != _to, "Cannot swap a card with yourself");
     _safeTransfer(swapper, _to, _mon1, "");
     _safeTransfer(_to, swapper, _mon2, "");
 
     // update the decks
-    decks[swapper][_idx1] = _mon2;
-    decks[_to][_idx2] = _mon1;
+    decks[swapper][idx1] = _mon2;
+    decks[_to][idx2] = _mon1;
   }
 
 

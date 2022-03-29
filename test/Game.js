@@ -41,7 +41,7 @@ describe("Game contract", function () {
     const monId2 = receipt2.events[0].args.tokenId;
 
     await game.connect(player2).putUpForSale(monId2);
-    await game.connect(player1).swap(player2.address, monId1, monId2, 0, 0);
+    await game.connect(player1).swap(player2.address, monId1, monId2);
     expect(await game.ownerOf(monId1)).to.equal(player2.address);
     expect(await game.ownerOf(monId2)).to.equal(player1.address);
   });
