@@ -165,7 +165,6 @@ contract Game is ERC721 {
 
   }
 
-
   function swapForNewCard(uint256 _mon) external {
     address swapper = msg.sender;
     uint256 idx = indexInDeck(swapper, _mon);
@@ -202,4 +201,24 @@ contract Game is ERC721 {
     nonce++;
     return x;
   }
+
+   function transferFrom(
+        address from,
+        address to,
+        uint256 tokenId
+    ) public virtual override {
+      // disable transferFrom - only way to obtain a new card is by swapping
+      assert(false);
+    }
+
+    function safeTransferFrom(
+        address from,
+        address to,
+        uint256 tokenId,
+        bytes memory _data
+    ) public virtual override {
+      // disable transferFrom - only way to obtain a new card is by swapping
+      assert(false);
+    }
+
 }
