@@ -1,8 +1,8 @@
 # Hats Challenge #1
 
-## Task: obtain the flag
+## Task: Capture the Flag
 
-`Game.sol` encodes a fighting game where you can pitch decks of Mons against the deck of the flagholder, in order to obtain the flag:
+`Game.sol` encodes a card fighting game where the goal is to obtain the flag by pitching your deck of Mons against the deck of the flagholder and win the fight
 
 - anyone can join the game calling `game.join()`
 - on joining, a player receives a deck of 3 pseudo-random Mons
@@ -12,7 +12,7 @@
 
 - at each moment, one player holds the flag
 - other players can try to capture the flag by fighting the flag holder
-- Fight between single Mons: can fight in one of the 3 elements (FIRE, WATER or AIR). The Mon with the highest value in that element wins. If the score is the equal, the fastest monster wins.
+- a fight between two Mons takes place with one of the 3 elements (FIRE, WATER or AIR). The Mon with the highest value in that element wins the fight. If the two mons have the same strength, the Mon with the most SPEED wins.
 - A fight between two decks consists of pairing the three Mons of the challenger with the 3 Mons of the flag holder, pseudo-randomly choosing 3 elements, and then having the 3 pairs fight in each of these elements
 
 ## THE HATS CHALLENGE:
