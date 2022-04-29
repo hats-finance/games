@@ -14,8 +14,10 @@ contract Game is ERC721 {
   uint8 constant MAX_POINTS = 22;
   uint8 constant DECK_SIZE = 3;
 
-  uint256 internal nonce = 123;
+  uint256 internal nonce = 123; // nonce used by pseudo-random generator
 
+
+  // a Mon has 4 attributes
   struct Mon {
     uint8 water;
     uint8 air;
@@ -23,26 +25,29 @@ contract Game is ERC721 {
     uint8 speed;
   }
 
+  // a mapping from ids to Mons
   mapping(uint256 => Mon) public mons;
 
+  // a mapping from players to their decks
   mapping(address => uint256[DECK_SIZE]) public decks;
 
+  // a mapping from ids of Mons to booleans - if true, the Mon is for sale
   mapping(uint256 => bool) public forSale;
 
-  address public flag;
+  // address of the flag holder
+  address public flagHolder;
+
 
   constructor() ERC721("Hats Game 1", "HG1") {
-
-    // create a superdeck for the deployer
+    // create an unbeatable superdeck for the deployer
     Mon memory superMon = Mon(9,9,9,9);
-    address flagHolder = msg.sender;
+    flagHolder = msg.sender;
     for (uint8 i; i < DECK_SIZE; i++) {
       decks[flagHolder][i] = _mintMon(flagHolder, superMon);
     }
-    flag = flagHolder;
-
   }
-
+  
+  // join the game and receive 3 random Mons
   function join() external returns (uint256[3] memory deck) {
     address newPlayer = msg.sender;
     require(balanceOf(newPlayer) == 0, "player already joined");
@@ -55,10 +60,10 @@ contract Game is ERC721 {
     decks[newPlayer] = deck;
   }
 
+  // fight the flagHolder with your deck
   function fight() external {
-    // fight the two decks 
     address attacker = msg.sender;
-    address opponent = flag;
+    address opponent = flagHolder;
     uint256[3] memory deck0 = decks[msg.sender];
     uint256[3] memory deck1 = decks[opponent];
 
@@ -74,13 +79,13 @@ contract Game is ERC721 {
 
     // winner is the player with most Mons left
     if (balanceOf(attacker) > balanceOf(opponent)) {
-        flag = attacker;
+        flagHolder = attacker;
     }
 
     // replenish balance of both players so they can play again
     uint256[3] memory deckAttacker = decks[attacker];
     uint256[3] memory deckOpponent = decks[opponent];
-    for (uint i; i < DECK_SIZE; i++) {      
+    for (uint i; i < DECK_SIZE; i++) {
       if (!_exists(deckAttacker[i])) {
         deckAttacker[i] = _mintMon(attacker);
       }
@@ -93,16 +98,16 @@ contract Game is ERC721 {
     decks[opponent] = deckOpponent;
   }
 
-  //// @returns true if _mon0 wins, false otherwise
-  function _fight(uint256 _mon0, uint256 _mon1, uint8 element) internal view returns(bool) {
-    assert(element < 3);
+  // fight _mon0 againts _mon1 in element _element
+  function _fight(uint256 _mon0, uint256 _mon1, uint8 _element) internal view returns(bool) {
+    assert(_element < 3);
     Mon memory mon0;
     Mon memory mon1;
 
     mon0 = mons[_mon0];
     mon1 = mons[_mon1];
 
-    if (element == WATER) {
+    if (_element == WATER) {
       if (mon0.water > mon1.water) {
         return true;
       } else if (mon0.water < mon1.water) {
@@ -110,7 +115,7 @@ contract Game is ERC721 {
       } else {
         return mon0.speed > mon1.speed;
       }
-    } else if (element == AIR) {
+    } else if (_element == AIR) {
       if (mon0.air > mon1.air) {
         return true;
       } else if (mon0.air < mon1.air) {
@@ -118,7 +123,7 @@ contract Game is ERC721 {
       } else {
         return mon0.speed > mon1.speed;
       }
-    } else if (element == FIRE) {
+    } else if (_element == FIRE) {
       if (mon0.fire > mon1.fire) {
         return true;
       } else if (mon0.fire < mon1.fire) {
@@ -129,11 +134,13 @@ contract Game is ERC721 {
     }
   }
 
+  // put a mon up for sale
   function putUpForSale(uint256 _monId) public {
     require(ownerOf(_monId) == msg.sender, "Can only put your own mons up for sale");
     forSale[_monId] = true;
   }
 
+  // swap your _mon1 for a _mon2 that is for sale and owned by _to
   function swap(address _to, uint256 _mon1, uint256 _mon2) external {
     address swapper = msg.sender;
     require(forSale[_mon2], "Cannot swap a Mon that is not for sale");
@@ -148,9 +155,10 @@ contract Game is ERC721 {
     // update the decks
     decks[swapper][idx1] = _mon2;
     decks[_to][idx2] = _mon1;
+
   }
 
-  function indexInDeck(address _owner, uint256 _monId) public view returns(uint256 idx) {
+  function indexInDeck(address _owner, uint256 _monId) internal view returns(uint256 idx) {
     for (uint256 i; i < DECK_SIZE; i++) {
       if (decks[_owner][i] == _monId) {
         idx = i;
@@ -179,6 +187,7 @@ contract Game is ERC721 {
     return _mintMon(_to, newMon);
   }
 
+  // generate a new Mon
   function genMon() private returns (Mon memory newMon) {
     // generate a new Mon
     uint8 fire = randomGen(10);
