@@ -50,7 +50,7 @@ contract Game is ERC721 {
     address newPlayer = msg.sender;
     require(balanceOf(newPlayer) == 0, "player already joined");
 
-    // give the new player 3 pseudoramon Mons
+    // give the new player 3 pseudorandom Mons
     deck[0] = _mintMon(newPlayer);
     deck[1] = _mintMon(newPlayer);
     deck[2] = _mintMon(newPlayer);
@@ -62,7 +62,7 @@ contract Game is ERC721 {
   function fight() external {
     address attacker = msg.sender;
     address opponent = flagHolder;
-    uint256[3] memory deck0 = decks[msg.sender];
+    uint256[3] memory deck0 = decks[attacker];
     uint256[3] memory deck1 = decks[opponent];
 
     for (uint8 i = 0; i < DECK_SIZE; i++) {
