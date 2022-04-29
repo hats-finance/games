@@ -46,12 +46,12 @@ describe("Game contract", function () {
     expect(await game.ownerOf(monId2)).to.equal(player1.address);
   });
 
-  it("swapForNewCard", async function () {
+  it("swapForNewMon", async function () {
     const tx = await game.connect(player1).join();
     const receipt = await tx.wait();
     // get a tokenID
     const monId1 = receipt.events[0].args.tokenId;
-    await game.connect(player1).swapForNewCard(monId1);
+    await game.connect(player1).swapForNewMon(monId1);
     await expect(game.ownerOf(monId1)).to.revertedWith("nonexistent token");
   });
 
@@ -71,5 +71,31 @@ describe("Game contract", function () {
     await expect(mon1.air).to.be.lessThanOrEqual(9);
     await expect(mon1.fire).to.be.lessThanOrEqual(9);
     await expect(mon1.speed).to.be.lessThanOrEqual(9);
+  });
+
+  it("transfer fails", async function () {
+    const tx = await game.connect(player1).join();
+    const receipt = await tx.wait();
+    // get a tokenID
+    const monId1 = receipt.events[0].args.tokenId;
+    expect(await game.balanceOf(player1.address)).to.equal(3);
+    await expect(
+      game.transferFrom(player1.address, player2.address, monId1)
+    ).to.be.revertedWith("disabled");
+    await expect(
+      game["safeTransferFrom(address,address,uint256,bytes)"](
+        player1.address,
+        player2.address,
+        monId1,
+        []
+      )
+    ).to.be.revertedWith("disabled");
+    await expect(
+      game["safeTransferFrom(address,address,uint256)"](
+        player1.address,
+        player2.address,
+        monId1
+      )
+    ).to.be.revertedWith("disabled");
   });
 });

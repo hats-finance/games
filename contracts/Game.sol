@@ -142,7 +142,7 @@ contract Game is ERC721 {
   function swap(address _to, uint256 _mon1, uint256 _mon2) external {
     address swapper = msg.sender;
     require(forSale[_mon2], "Cannot swap a Mon that is not for sale");
-    require(swapper != _to, "Cannot swap a card with yourself");
+    require(swapper != _to, "Cannot swap a Mon with yourself");
 
     uint256 idx1 = indexInDeck(swapper, _mon1);
     uint256 idx2 = indexInDeck(_to, _mon2);
@@ -165,7 +165,7 @@ contract Game is ERC721 {
 
   }
 
-  function swapForNewCard(uint256 _mon) external {
+  function swapForNewMon(uint256 _mon) external {
     address swapper = msg.sender;
     uint256 idx = indexInDeck(swapper, _mon);
     _burn(_mon);
@@ -206,19 +206,29 @@ contract Game is ERC721 {
         address from,
         address to,
         uint256 tokenId
-    ) public virtual override {
-      // disable transferFrom - only way to obtain a new card is by swapping
-      assert(false);
+    ) public override {
+      // disable transferFrom - the only way to obtain a new Mon is by swapping
+      require(false, "transfers of Mons are disabled");
     }
 
-    function safeTransferFrom(
+     function safeTransferFrom(
         address from,
         address to,
         uint256 tokenId,
         bytes memory _data
-    ) public virtual override {
-      // disable transferFrom - only way to obtain a new card is by swapping
-      assert(false);
+    ) public override {
+      // disable transferFrom - the only way to obtain a new Mon is by swapping
+      require(false, "transfers of Mons are disabled");
+
+    }
+    function  xsafeTransferFrom(
+        address from,
+        address to,
+        uint256 tokenId,
+        bytes memory _data
+    ) public {
+      // disable transferFrom - the only way to obtain a new Mon is by swapping
+      require(false, "transfers of Mons are disabled");
     }
 
 }
