@@ -10,8 +10,6 @@ contract Game is ERC721 {
   uint8 constant WATER = 0;
   uint8 constant AIR = 1;
   uint8 constant FIRE = 2;
-
-  uint8 constant MAX_POINTS = 22;
   uint8 constant DECK_SIZE = 3;
 
   uint256 internal nonce = 123; // nonce used by pseudo-random generator
@@ -164,6 +162,7 @@ contract Game is ERC721 {
         idx = i;
       }
     }
+
   }
 
 
@@ -193,15 +192,7 @@ contract Game is ERC721 {
     uint8 fire = randomGen(10);
     uint8 water = randomGen(10);
     uint8 air = randomGen(10);
-    uint8 speed;
-    if (fire + water + air >= MAX_POINTS) {
-      speed = 0;
-    } else {
-      speed = randomGen(MAX_POINTS - fire - water - air);
-      if (speed > 9) {
-        speed = 9;
-      }
-    }
+    uint8 speed = randomGen(10);
     newMon = Mon(fire, water, air, speed);
   }
 
