@@ -15,6 +15,6 @@
 - a fight between two Mons takes place with one of the 3 elements (FIRE, WATER or AIR). The Mon with the highest value in that element wins the fight. If the two mons have the same strength, the Mon with the most SPEED wins.
 - A fight between two decks consists of pairing the three Mons of the challenger with the 3 Mons of the flag holder, pseudo-randomly choosing 3 elements, and then having the 3 pairs fight in each of these elements
 
-## THE HATS CHALLENGE:
+## The Hats Challenge
 
-- Obtain the flag: i.e. `game.flag()` should return an address that you control
+- Obtain the flag: i.e. `game.flagHolder()` should return an address that you control
