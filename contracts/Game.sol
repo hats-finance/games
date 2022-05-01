@@ -221,14 +221,5 @@ contract Game is ERC721 {
       require(false, "transfers of Mons are disabled");
 
     }
-    function  xsafeTransferFrom(
-        address from,
-        address to,
-        uint256 tokenId,
-        bytes memory _data
-    ) public {
-      // disable transferFrom - the only way to obtain a new Mon is by swapping
-      require(false, "transfers of Mons are disabled");
-    }
 
 }
