@@ -2,7 +2,7 @@
 
 ## Capture the Flag
 
-The contract (`Game.sol`)[./contracts/Game.sol] encodes a card fighting game where the goal is to obtain the flag by pitching your deck of Mons against the deck of the flagholder and win the fight
+The contract [`Game.sol`](./contracts/Game.sol) encodes a card fighting game where the goal is to obtain the flag by pitching your deck of Mons against the deck of the flagholder and win the fight
 
 - anyone can join the game calling `game.join()`
 - on joining, a player receives a deck of 3 pseudo-random Mons
@@ -16,7 +16,7 @@ The contract (`Game.sol`)[./contracts/Game.sol] encodes a card fighting game whe
 
 ## The Hats Challenge
 
-The (`Game.sol`)[./contracts/Game.sol] is deployed with the flagHolder holding an apparently unbeatable deck with perfect Mons.
+The [`Game.sol`](./contracts/Game.sol) is deployed with the flagHolder holding an apparently unbeatable deck with perfect Mons.
 
 Your mission is to obtain the flag: i.e. game.flagHolder() should return an address that you control
 
