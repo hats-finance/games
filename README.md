@@ -18,7 +18,7 @@ The contract [`Game.sol`](./contracts/Game.sol) encodes a card fighting game whe
 
 The [`Game.sol`](./contracts/Game.sol) is deployed with the flagHolder holding an apparently unbeatable deck with perfect Mons.
 
-Your mission is to obtain the flag: i.e. game.flagHolder() should return an address that you control
+Your mission is to obtain the flag: i.e. `game.flagHolder()` should return an address that you control
 
 ## How to submit
 
