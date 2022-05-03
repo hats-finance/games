@@ -35,7 +35,6 @@ contract Game is ERC721 {
   // address of the flag holder
   address public flagHolder;
 
-
   constructor() ERC721("Hats Game 1", "HG1") {
     // create an unbeatable superdeck for the deployer
     Mon memory superMon = Mon(9,9,9,9);
